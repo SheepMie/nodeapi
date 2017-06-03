@@ -1,3 +1,7 @@
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
+var config = require('config-lite')(__dirname);
+var auth = require('../auth/auth.service');
 exports.addUser = function (req,res) {
     var nickname = req.body.nickname ? req.body.nickname.replace(/(^\s+)|(\s+$)/g, "") : '';
 	var email = req.body.email ? req.body.email.replace(/(^\s+)|(\s+$)/g, "") : '';
@@ -22,7 +26,23 @@ exports.addUser = function (req,res) {
 	}
 	if (errorMsg) {
 		return res.status(401).send({errorMsg: errorMsg});
-	}else{
-		return res.status(200).send({success: 'aha'});
 	}
+	var newUser = new User(req.body);
+	newUser.role = 'user';
+
+	newUser.saveAsync().then(function (user) {
+		var token = auth.signToken(user._id);
+		
+		return res.status(200).send({
+			token: token
+		});
+	}).catch(function (err) {
+		if (err.errors && err.errors.nickname) {	//自定义方法已写在model里
+			err = {errorMsg: err.errors.nickname.message}
+		}
+		if (err.errors && err.errors.email) {
+			err = {errorMsg: err.errors.email.message}
+		}
+		return res.status(401).send(err);
+	});
 };

@@ -13,8 +13,16 @@ var bodyParser = require('body-parser');    //路由解析模块
 //var flash = require('connect-flash');     //node的接口返回提示
 
 /*数据库连起来*/
-//var mongoose = require("mongoose");
+var mongoose = require("mongoose");
 //var MongoStore = require('connect-mongo')(session); //该模块用于将session存入mongo中
+mongoose.Promise = require('bluebird');
+//载入数据库手脚架
+var modelsPath = path.join(__dirname, 'models');
+fs.readdirSync(modelsPath).forEach(function (file) {
+    if (/(.*)\.(js$|coffee$)/.test(file)) {
+        require(modelsPath + '/' + file);
+    }
+});
 
 /*调起文件*/
 var routes = require('./routes');
@@ -57,13 +65,13 @@ app.use(morgan("dev"));
 app.use(morgan({stream: accessLog}));
 
 /*数据库连接*/
-// var db = mongoose.connect(config.mongodb);  //链接数据库
-// db.connection.on("error", function(error) {
-//     console.log("数据库连接失败：" + error);
-// });
-// db.connection.on("open", function() {
-//     console.log("------数据库连接成功！------");    //数据模板创建用Schema模块去创建 
-// });
+var db = mongoose.connect(config.mongodb);  //链接数据库
+db.connection.on("error", function(error) {
+    console.log("数据库连接失败：" + error);
+});
+db.connection.on("open", function() {
+    console.log("------数据库连接成功！------");    //数据模板创建用Schema模块去创建 
+});
 
 /*路由必备*/ 
 routes(app);

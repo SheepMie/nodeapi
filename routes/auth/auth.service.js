@@ -6,7 +6,7 @@ var User = mongoose.model('User');
 
 var  signToken = function(id) {
     var expiry = new Date();
-    expiry.setDate(expiry.getDate() + 7);
+    expiry.setDate(expiry.getDate() + 7);  //7天有效token
     return jwt.sign({
         id: id ,
         exp:parseInt(expiry.getTime()/1000)

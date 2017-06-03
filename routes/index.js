@@ -9,7 +9,7 @@ module.exports = function(app) {
         next();
     });
 
-    //app.use('/auth', require('./auth/index'));
+    app.use('/auth', require('./auth/index'));
 
     app.use('/user', require('./user/index'));
 

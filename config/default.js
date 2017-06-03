@@ -2,9 +2,9 @@
 module.exports = {
   port: 7777,	// 程序启动要监听的端口号
   session: {	//express-session 的配置信息
-    secret: 'aha',
+    secrets: 'aha',
     key: 'aha',
     maxAge: 3600000			//session时效性单位毫秒
   },
-  mongodb: 'mongodb://localhost:27017/nodeapi'	//mongodb 的地址，myblog 为 db 名
+  mongodb: 'mongodb://localhost:27017/nodeapi'	//mongodb 的地址
 };

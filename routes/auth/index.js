@@ -5,10 +5,10 @@ var mongoose = require('mongoose');
 var User = mongoose.model('User');
 var auth = require('./auth.service');
 
-require('./local/passport').setup(User);
+require('./login/passport').setup(User);
 
 var router = express.Router();
 
-router.use('/local', require('./local'));
+router.use('/login', require('./login'));
 
 module.exports = router;

@@ -18,7 +18,7 @@ router.post('/', function (req,res,next) {
     }
 
 },function(req, res, next) {
-    passport.authenticate('local', function (err, user, info) {
+    passport.authenticate('local', function (err, user, info) { //注意这里的local是用local strategy进行验证，不是指文件
         if (err){
             return res.status(401).send();
         }
