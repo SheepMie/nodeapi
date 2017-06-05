@@ -3,6 +3,8 @@ var User = mongoose.model('User');
 var Article = mongoose.model('Article');
 var Album = mongoose.model('Album');
 var config = require('config-lite')(__dirname);
+var	formidable = require('formidable');
+var fs = require('fs');
 var auth = require('../auth/auth.service');
 exports.addUser = function (req,res) {
     var nickname = req.body.nickname ? req.body.nickname.replace(/(^\s+)|(\s+$)/g, "") : '';
@@ -68,5 +70,93 @@ exports.authInfo = function (req,res) {
 		});
 	}).catch(function (err) {
 		return res.status(401).send();
+	});
+};
+
+exports.userInfo = function (req,res) {
+	var uid = req.params.id;
+	var id;
+	var data;
+	var own = false;
+	if (req.user) {
+		id = req.user.id;
+	}
+	User.findById(uid)
+		.populate('friend','nickname header')
+		.exec()
+		.then(function (user) {
+		data = user.toObject();
+		data.userInfo.friend = user.friend;
+		if (id == data._id) own = true;
+		return Article.count({authId: data._id})
+	}).then(function (articleCount) {
+		data.userInfo.articleCount = articleCount;
+		data.userInfo.collectCount = data.collectList.length;
+		return Album.countAsync({userId: data._id})
+	}).then(function (photoCount) {
+		data.userInfo.photoCount = photoCount;
+		return res.status(200).send({
+			own: own,
+			userInfo: data.userInfo
+		});
+	}).catch(function (err) {
+		return res.status(401).send();
+	});
+};
+
+exports.userSet = function (req,res) {
+	var id = req.user.id;
+	User.findByIdAsync(id).then(function (user) {
+		var own = true;
+		return res.status(200).send({
+			own: own,
+			userInfo: user.userInfo
+		});
+	}).catch(function (err) {
+		return res.status(401).send();
+	});
+};
+
+exports.header = function (req,res) {				//用户头像
+	var form = new formidable.IncomingForm();
+	//form.encoding = 'utf-8';
+	form.keepExtensions = true;
+	form.uploadDir = __dirname + '/../../public/uploads/head/';
+	form.parse(req, function (err, fields, files) {
+		if (err) {
+			throw err;
+		}
+
+		var img = files.file;
+		var path = img.path;
+		var type = img.type.split('/')[0];
+		if(img.size > 1024*1024) {
+			fs.unlink(path, function () {
+				return res.send({"error":0});
+			});
+		}else if(type != 'image' && type != 'application'){
+			fs.unlink(path, function() {
+				return res.send({"error":0});
+			});
+		}else{
+			var urlPath = path.replace(/\\/g, '/');
+			var url = config.root + '/public/uploads/head' + urlPath.substr(urlPath.lastIndexOf('/'), urlPath.length);
+			var info = {
+				"error": 0,
+				"url" :url
+			};
+			
+			var id = req.user.id;
+			User.findByIdAsync(id).then(function (user) {
+				user.header = url;
+				return user.saveAsync()
+			}).then(function () {
+				return res.status(200).send({
+					"url" :url
+				});
+			}).catch(function (err) {
+				return res.status(401).send(err);
+			});
+		}
 	});
 };

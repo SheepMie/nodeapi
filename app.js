@@ -39,6 +39,8 @@ var app = express(); //初始化express应用
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/*调用静态文件*/
+app.use('/public', express.static(path.join(__dirname, 'public')));
 //处理cookie存储中间件
 // app.use(session({
 //   name: config.session.key,// 设置 cookie 中保存 session id 的字段名称

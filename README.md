@@ -15,11 +15,34 @@ write useful api by node,case I have no more time to write a complete project!
 >
 > files:routes/auth/login,routes/auth,
 
-## 根据token获取用户信息
-> models:express-jwt(jsonwebtoken解析，会返回用户信息)
+## 根据token获取登录首页的信息
+> models:express-jwt(jsonwebtoken解析，会返回token里用户信息)
 >
 > path:user/authInfo
 >
 > files:routes/user,models/user.model.js,models/article.model.js,models/album.model.js
 
 注：用户前端请求时，加一个token,Authorization:Bearer +<token>
+
+## 根据token获取token用户信息
+> models:express-jwt
+>
+> path:user/set
+>
+> files:routes/user,models/user.model.js
+
+## 根据id获取某个用户信息(token)
+> models:express-jwt
+>
+> path:user/:id/userInfo
+>
+> files:routes/user,models/user.model.js,models/article.model.js,models/album.model.js
+
+## 上传用户头像，上传图片(token)
+> models:formidable, fs(node自带,文件处理)
+>
+> path:user/header
+>
+> files:routes/user,models/user.model.js,public/uploads/head(存放图片)
+
+注：不要在app.js调起静态文件中间件，app.use('/public', express.static(path.join(__dirname, 'public')));
