@@ -45,4 +45,4 @@ write useful api by node,case I have no more time to write a complete project!
 >
 > files:routes/user,models/user.model.js,public/uploads/head(存放图片)
 
-注：不要在app.js调起静态文件中间件，app.use('/public', express.static(path.join(__dirname, 'public')));
+注：不要忘记在app.js调起静态文件中间件，app.use('/public', express.static(path.join(__dirname, 'public')));
