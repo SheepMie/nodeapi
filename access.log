@@ -108,3 +108,5 @@
 ::ffff:127.0.0.1 - - [Mon, 05 Jun 2017 01:14:25 GMT] "GET /user/authInfo HTTP/1.1" 401 - "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
 ::ffff:127.0.0.1 - - [Mon, 05 Jun 2017 01:20:50 GMT] "GET /user/authInfo HTTP/1.1" 401 - "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
 ::ffff:127.0.0.1 - - [Mon, 05 Jun 2017 01:22:48 GMT] "GET /user/authInfo HTTP/1.1" 200 366 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
+::ffff:127.0.0.1 - - [Mon, 05 Jun 2017 02:11:19 GMT] "GET /user/authInfo HTTP/1.1" 401 516 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
+::ffff:127.0.0.1 - - [Mon, 05 Jun 2017 02:11:33 GMT] "GET /user/authInfo HTTP/1.1" 200 366 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
