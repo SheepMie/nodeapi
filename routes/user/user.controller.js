@@ -1,5 +1,7 @@
 var mongoose = require('mongoose');
 var User = mongoose.model('User');
+var Article = mongoose.model('Article');
+var Album = mongoose.model('Album');
 var config = require('config-lite')(__dirname);
 var auth = require('../auth/auth.service');
 exports.addUser = function (req,res) {
@@ -44,5 +46,27 @@ exports.addUser = function (req,res) {
 			err = {errorMsg: err.errors.email.message}
 		}
 		return res.status(401).send(err);
+	});
+};
+
+exports.authInfo = function (req,res) {
+	var id = req.user.id;
+	var data;
+	User.findByIdAsync(id).then(function (user) { //bluebird写法
+		data = user.toObject();
+		return Article.countAsync({authId: data._id})
+	}).then(function (articleCount) {
+		data.authInfo.articleCount = articleCount;
+		data.authInfo.collectCount = data.collectList.length;
+		return Album.countAsync({userId: data._id})
+	}).then(function (photoCount) {
+		data.authInfo.photoCount = photoCount;
+		var token = auth.signToken(data._id);
+		return res.status(200).send({
+			token: token,
+			authInfo: data.authInfo
+		});
+	}).catch(function (err) {
+		return res.status(401).send();
 	});
 };

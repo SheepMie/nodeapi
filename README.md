@@ -1,5 +1,5 @@
 # nodeapi
-write useful api for node,case I have no more time to write a complete project!
+write useful api by node,case I have no more time to write a complete project!
 
 ## 注册用户
 >models:jsonwebtoken(或取token，旨在安全),passport(登陆认证),crypto
@@ -14,4 +14,12 @@ write useful api for node,case I have no more time to write a complete project!
 >path:auth/login
 
 >files:routes/auth/login,routes/auth,
+
 ## 根据token获取用户信息
+>models:express-jwt(jsonwebtoken解析，会返回用户信息)
+
+>path:user/authInfo
+
+>files:routes/user,models/user.model.js,models/article.model.js,models/album.model.js
+
+注：用户前端请求时，加一个token,Authorization:Bearer +<token>
