@@ -5,6 +5,7 @@ var Album = mongoose.model('Album');
 var config = require('config-lite')(__dirname);
 var	formidable = require('formidable');
 var fs = require('fs');
+var _ = require('lodash');
 var auth = require('../auth/auth.service');
 exports.addUser = function (req,res) {
     var nickname = req.body.nickname ? req.body.nickname.replace(/(^\s+)|(\s+$)/g, "") : '';
@@ -145,9 +146,15 @@ exports.header = function (req,res) {				//用户头像
 				"error": 0,
 				"url" :url
 			};
-			
 			var id = req.user.id;
 			User.findByIdAsync(id).then(function (user) {
+				var oldurl = path.substr(0,urlPath.lastIndexOf('/')) + user.header.substr(user.header.lastIndexOf('/'), user.header.length);
+				var oldurl = oldurl.replace('\/', '\\');
+				fs.exists(oldurl, function(exists){ 
+					if(exists){ 
+						fs.unlinkSync(oldurl)
+					} 
+				});
 				user.header = url;
 				return user.saveAsync()
 			}).then(function () {
@@ -159,4 +166,45 @@ exports.header = function (req,res) {				//用户头像
 			});
 		}
 	});
+};
+
+exports.updateUser = function (req, res) {
+	var id = req.user.id;
+	var errorMsg;
+	var NICKNAME_REGEXP = /^[(\u4e00-\u9fa5)0-9a-zA-Z\_\s@]+$/;
+	var QQ_REGEXP = /^\+?[1-9][0-9]*$/;
+	if (req.body.nickname) {
+		var nickname = req.body.nickname ? req.body.nickname.replace(/(^\s+)|(\s+$)/g, "") : '';
+		if (nickname === '') {
+			errorMsg = "昵称不能为空";
+		} else if (nickname.length <= 3 || nickname.length > 9 || !NICKNAME_REGEXP.test(nickname)) {
+			errorMsg = "呢称不合法";
+		}
+	}
+	if (req.body.summary && req.body.summary.length > 20) {
+		errorMsg = "简介过长";
+	} else if (req.body.url && req.body.url.length > 20) {
+		errorMsg = "微博地址过长";
+	} else if (req.body.qqnumber && (req.body.qqnumber.length > 12 || !QQ_REGEXP.test(req.body.qqnumber))) {
+		errorMsg = "QQ号码不合法";
+	}
+	if (errorMsg) {
+		return res.status(401).send({errorMsg: errorMsg});
+	}
+	User.findByIdAsync(id).then(function (user) {
+		_.assign(user, req.body);		//合并对象
+		if (req.body.birthdayMonth) user.birthday.month = req.body.birthdayMonth;
+		if (req.body.birthdayDay) user.birthday.day = req.body.birthdayDay;
+		user.updated = new Date();
+		return user.saveAsync()
+	}).then(function (user) {
+		return res.status(200).send({
+			userInfo: user.userInfo
+		})
+	}).catch(function (err) {
+		if (err.errors && err.errors.nickname) {
+			err = {errorMsg: err.errors.nickname.message}
+		}
+		return res.status(401).send(err);
+	})
 };
