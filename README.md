@@ -1,6 +1,6 @@
 # nodeapi
 write useful api by node,case I have no more time to write a complete project!
-
+> Before writing,I should thanks the product evangelist who named xuyd in github.All the api was copide from his lovely diary! I just select some usually api. If you want learn more,Go https://github.com/xuyd/vue-dairy
 ## 注册用户
 > models:jsonwebtoken(或取token，旨在安全),passport(登陆认证),crypto
 >
@@ -57,3 +57,11 @@ write useful api by node,case I have no more time to write a complete project!
 > files:routes/user,models/user.model.js
 
 学：这里用lodash的assign来合并对象
+
+## 修改用户密码(token)
+> models:-
+>
+> path:user/updatePassword 【put】
+>
+> files:routes/user,models/user.model.js
+

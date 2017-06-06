@@ -13,7 +13,7 @@ module.exports = function(app) {
 
     app.use('/user', require('./user/index'));
 
-    //app.use('/article', require('./article/index'));
+    app.use('/article', require('./article/index'));
 
     //app.use('/comment', require('./comment/index'));
 

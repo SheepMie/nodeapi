@@ -183,3 +183,6 @@
 ::ffff:127.0.0.1 - - [Tue, 06 Jun 2017 01:36:05 GMT] "PUT /user/updateUser HTTP/1.1" 401 2 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
 ::ffff:127.0.0.1 - - [Tue, 06 Jun 2017 01:37:22 GMT] "PUT /user/updateUser HTTP/1.1" 401 2 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
 ::ffff:127.0.0.1 - - [Tue, 06 Jun 2017 02:15:37 GMT] "PUT /user/updateUser HTTP/1.1" 200 391 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
+::ffff:127.0.0.1 - - [Tue, 06 Jun 2017 03:02:15 GMT] "PUT /user/updatePassword HTTP/1.1" 401 30 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
+::ffff:127.0.0.1 - - [Tue, 06 Jun 2017 03:02:36 GMT] "PUT /user/updatePassword HTTP/1.1" 401 45 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
+::ffff:127.0.0.1 - - [Tue, 06 Jun 2017 03:02:52 GMT] "PUT /user/updatePassword HTTP/1.1" 200 18 "-" "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.81 Safari/537.36"
