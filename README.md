@@ -1,6 +1,9 @@
 # nodeapi
 write useful api by node,case I have no more time to write a complete project!
-> Before writing,I should thanks the product evangelist who named xuyd in github.All the api was copide from his lovely diary! I just select some usually api. If you want learn more,Go https://github.com/xuyd/vue-dairy
+> Before writing,I should thanks the product evangelist who named xuyd in github.All the api was copide from his lovely diary! I just select some usually api and analyse them. If you want learn more,Go https://github.com/xuyd/vue-dairy
+
+#常有错误
+>jwt expired 登入认证过期，重新登陆
 ## 注册用户
 > models:jsonwebtoken(或取token，旨在安全),passport(登陆认证),crypto
 >
@@ -65,3 +68,19 @@ write useful api by node,case I have no more time to write a complete project!
 >
 > files:routes/user,models/user.model.js
 
+## 添加文章(token)
+> models:-
+>
+> path:user/updatePassword 【put】
+>
+> files:routes/user,models/user.model.js
+
+## 图片编辑，缩略处理(token)
+> models:gm(后台图片处理),gm.subClass({ imageMagick : true })
+>
+> path:article/upload 【post】
+>
+> files:routes/article
+
+注：
+1. 使用gm需要先在本地安装 GraphicsMagick或者ImageMagick;这里装了ImageMagick，安装到最后一步需要勾选Install legacy utilities(e.g. convert)选项

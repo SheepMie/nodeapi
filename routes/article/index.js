@@ -6,7 +6,7 @@ var config = require('config-lite')(__dirname);
 var router = express.Router();
 
 router.post('/addArticle', expressJwt({secret: config.session.secrets}), controller.addArticle);
-// router.post('/upload', expressJwt({secret: config.session.secrets}), controller.upload);
+router.post('/upload', expressJwt({secret: config.session.secrets}), controller.upload);
 // router.get('/tags', controller.tags);
 // router.get('/:id/articlePage', expressJwt({secret: config.session.secrets,credentialsRequired:false}), controller.articlePage);
 // router.get('/articleList/:date', controller.articleList);
