@@ -21,8 +21,6 @@ exports.addArticle = function (req,res) {
         errorMsg = '标题过长';
     }else if(!content){
         errorMsg = '内容不能为空';
-    }else if(weather.length>5){
-        errorMsg = '天气过长';
     }else if(!tag){
         errorMsg = '标签不能为空';
     }
@@ -100,5 +98,15 @@ exports.upload = function (req,res) {
 
 
         }
+    });
+};
+
+exports.tags = function (req, res) {
+    Article.distinctAsync("tag").then(function (tags) { //获取tag的不重复值，并一数组形式返回
+        return res.status(200).send({
+            tags: tags
+        })
+    }).catch(function (err) {
+        return res.status(401).send();
     });
 };
