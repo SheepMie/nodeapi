@@ -95,14 +95,12 @@ exports.upload = function (req,res) {
                             return res.status(200).send({'url':url});
                         });
                 });
-
-
         }
     });
 };
 
 exports.tags = function (req, res) {
-    Article.distinctAsync("tag").then(function (tags) { //获取tag的不重复值，并一数组形式返回
+    Article.distinctAsync("tag").then(function (tags) { //获取tag的不重复值，并以数组形式返回
         return res.status(200).send({
             tags: tags
         })

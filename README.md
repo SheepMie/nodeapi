@@ -91,3 +91,11 @@ write useful api by node,case I have no more time to write a complete project!
 
 学：这里只用了ImageMagick 的裁剪，更多图形操作可看相应文档
 
+## 获取标签列表
+> models:-
+>
+> path:article/tags 【get】
+>
+> files:routes/article
+
+学：这里用distinctAsync查询方式来返回一个某字段名的数组，数组里的内容不重复。以数组形式获取不同标签而不用再为标签建一张表
