@@ -128,7 +128,7 @@ exports.header = function (req,res) {				//用户头像
 			throw err;
 		}
 
-		var img = files.file;
+		var img = files.img;
 		var path = img.path;
 		var type = img.type.split('/')[0];
 		if(img.size > 1024*1024) {

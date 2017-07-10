@@ -108,3 +108,37 @@ exports.tags = function (req, res) {
         return res.status(401).send();
     });
 };
+
+exports.articlePage = function (req, res) {
+    var id;
+    if(req.user) id = req.user.id;
+    var aid = req.params.id;
+    var articlePage,own;
+    Article.findById(aid)
+        .populate('authId','nickname header summary')    //mongoose方法，组成一个以authId为key的json组
+        .exec()
+        .then(function (article) {
+            articlePage = article;
+            console.log(articlePage)
+            var num = id == article.authId._id?0:1;
+            own = !num;
+            return Article.findByIdAndUpdate(aid, {$inc: {pv: num}});
+    }).then(function () {
+        return User.findByIdAsync(id)
+    }).then(function (user) {
+        var collected = false;
+        if(user) {
+            var isCollect = _.findIndex(user.collectList, function (item) {
+                return item.toString() == aid;
+            });
+            if(isCollect !== -1) collected = true;
+        }
+        return res.status(200).send({
+            article: articlePage,
+            collected: collected,
+            own: own
+        })
+    }).catch(function (err) {
+        return res.status(401).send();
+    });
+};

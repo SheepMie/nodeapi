@@ -40,6 +40,16 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
 /*调用静态文件*/
+
+app.all('*', function(req, res, next) {		//设置头信息
+    res.header("Access-Control-Allow-Origin", req.headers.origin); //*时解决跨域
+    res.header("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With, X-HTTP-Method-Override,Accept");
+    res.header("Access-Control-Allow-Methods","POST,GET,PUT,DELETE,OPTIONS");
+    res.header("Access-Control-Allow-Credentials", "true");		
+    res.header("X-Powered-By",' 3.2.1');
+    //res.header("Content-Type", "application/json;charset=utf-8");
+    next();
+});
 app.use('/public', express.static(path.join(__dirname, 'public')));
 //处理cookie存储中间件
 // app.use(session({
