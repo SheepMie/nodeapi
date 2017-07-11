@@ -58,7 +58,7 @@ exports.upload = function (req,res) {
             throw err;
         }
         
-        var img = files.file;
+        var img = files.img;
         var path = img.path;
         var type = img.type.split('/')[0];
         if(img.size > 1024*1024) {
@@ -115,11 +115,10 @@ exports.articlePage = function (req, res) {
     var aid = req.params.id;
     var articlePage,own;
     Article.findById(aid)
-        .populate('authId','nickname header summary')    //mongoose方法，组成一个以authId为key的json组
+        .populate('authId','nickname header summary')    //mongoose方法，组成一个以authId为key的json组，内容是查找返回的数据
         .exec()
         .then(function (article) {
             articlePage = article;
-            console.log(articlePage)
             var num = id == article.authId._id?0:1;
             own = !num;
             return Article.findByIdAndUpdate(aid, {$inc: {pv: num}});
@@ -137,6 +136,40 @@ exports.articlePage = function (req, res) {
             article: articlePage,
             collected: collected,
             own: own
+        })
+    }).catch(function (err) {
+        return res.status(401).send();
+    });
+};
+
+exports.articleList = function (req, res) {
+    var time = parseInt(req.params.date);
+    var tag = req.query.tag;
+    var search = req.query.search;
+    search = new RegExp(search,"i");    //正则关键字查找i是不区分大小写
+    console.log(search)
+    var date = new Date(time);
+    var condition = {
+        status: {$gt: 0},
+        created: {$lt: date }
+    };
+    if(tag) condition.tag = {$eq: tag};     //匹配含有该条件的内容
+    if(search) condition.title = search;
+    Article.find(condition,'authId title content image tag created commentCount pv', {  //要返回的对应内容
+        sort: {created: -1},        //倒叙排列
+        limit: 10
+    }).populate('authId','nickname')
+        .exec()
+        .then(function (article) {
+        var strLen = 200;
+        for(var i=0;i<article.length;i++) {
+            article[i].content = article[i].content.replace(/<\/?[^>]*>/g,'');
+            if(article[i].content.length>strLen) {
+                article[i].content = article[i].content.substring(0, strLen) + "  ...";
+            }
+        }
+        return res.status(200).send({
+            article: article
         })
     }).catch(function (err) {
         return res.status(401).send();

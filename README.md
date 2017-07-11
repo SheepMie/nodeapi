@@ -2,10 +2,10 @@
 write useful api by node,case I have no more time to write a complete project!
 > Before writing,I should thanks the product evangelist who named xuyd in github.All the apis were copied from his lovely diary! I just select someone usually and analyse them. If you want to learn more,Go https://github.com/xuyd/vue-dairy
 
-#node版本
+## node版本
 >node6.9.5
 
-#为何将app.all('*', function(req, res, next) {})提到app.js中
+## 为何将app.all('*', function(req, res, next) {})提到app.js中
 > 此目的是为让获取静态资源时的方法也经过请求头，这样设置后其他网站就可以跨域调用本站下的静态资源。注意此时Content-Type头不再设置
 其他网站可用
 ```
@@ -26,7 +26,7 @@ function ajax2Blob(url, onSuccess) {		//url为静态资源地址
 ```
 调用图片二进制
 
-#常有错误
+## 常有错误
 >jwt expired 登入认证过期，重新登陆
 
 
@@ -77,7 +77,7 @@ function ajax2Blob(url, onSuccess) {		//url为静态资源地址
 注：
 1. 不要忘记在app.js调起静态文件中间件，app.use('/public', express.static(path.join(__dirname, 'public')));
 2. fs操作静态文件时注意要用本地地址，不是link地址
-3. 参数不要忘记设置，这里上传图片用img,在route里获取时就用files.img来获取图片信息
+3. 参数不要忘记设置，这里上传图片用img做为参数,在route里获取时就用files.img来获取图片信息
 
 ## 修改用户信息(token)
 > models:lodash(延迟执行，value()后才执行。在这里用来合并对象)
@@ -139,3 +139,12 @@ var authId = {
     和原来authId存在的内容
 }
 ```
+
+## 查找并返回相应条件的内容
+> models:-
+>
+> path:articleList/:date 【get】
+>
+> files:routes/article
+
+学：params获取url对应参数，query获取get参数，在这里date获取的是时间戳
