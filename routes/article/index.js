@@ -10,7 +10,7 @@ router.post('/upload', expressJwt({secret: config.session.secrets}), controller.
 router.get('/tags', controller.tags);
 router.get('/:id/articlePage', expressJwt({secret: config.session.secrets,credentialsRequired:false}), controller.articlePage);
 router.get('/articleList/:date', controller.articleList);
-// router.get('/:id/:date', expressJwt({secret: config.session.secrets,credentialsRequired:false}), controller.articleUser);
+router.get('/:id/:date', expressJwt({secret: config.session.secrets,credentialsRequired:false}), controller.articleUser);
 // router.get('/:id/:date/articleTogether', expressJwt({secret: config.session.secrets,credentialsRequired:false}), controller.articleTogether);
 // router.put('/:id/articleCollect', expressJwt({secret: config.session.secrets}), controller.articleCollect);
 // router.put('/:id/editArticle', expressJwt({secret: config.session.secrets}), controller.editArticle);

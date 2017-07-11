@@ -5,6 +5,7 @@ var fs = require('fs');
 var	formidable = require('formidable');
 var gm = require('gm');
 var imageMagick = gm.subClass({ imageMagick : true });
+var _ = require('lodash');
 var config = require('config-lite')(__dirname);
 
 exports.addArticle = function (req,res) {
@@ -126,6 +127,7 @@ exports.articlePage = function (req, res) {
         return User.findByIdAsync(id)
     }).then(function (user) {
         var collected = false;
+        console.log(user)
         if(user) {
             var isCollect = _.findIndex(user.collectList, function (item) {
                 return item.toString() == aid;
@@ -155,12 +157,80 @@ exports.articleList = function (req, res) {
     };
     if(tag) condition.tag = {$eq: tag};     //匹配含有该条件的内容
     if(search) condition.title = search;
-    Article.find(condition,'authId title content image tag created commentCount pv', {  //要返回的对应内容
+    Article.find(condition,'authId title content image tag created commentCount pv', {  //条件，要返回的对应内容
         sort: {created: -1},        //倒叙排列
         limit: 10
     }).populate('authId','nickname')
         .exec()
         .then(function (article) {
+        var strLen = 200;
+        for(var i=0;i<article.length;i++) {
+            article[i].content = article[i].content.replace(/<\/?[^>]*>/g,'');
+            if(article[i].content.length>strLen) {
+                article[i].content = article[i].content.substring(0, strLen) + "  ...";
+            }
+        }
+        return res.status(200).send({
+            article: article
+        })
+    }).catch(function (err) {
+        return res.status(401).send();
+    });
+};
+
+exports.articleUser = function (req, res) {
+    var uid = req.params.id;
+    var id;
+    if(req.user) id = req.user.id;
+    var time = parseInt(req.params.date);
+    var date = new Date(time);
+    var condition = {
+        authId: {$eq: uid},
+        created: {$lt: date }
+    };
+    if(uid !== id) condition.status = {$gt: 0};
+
+    Article.find(condition,'authId title content image tag created commentCount pv', {
+        sort: {created: -1},
+        limit: 10
+    }).populate('authId','nickname')
+        .exec()
+        .then(function (article) {
+            var strLen = 200;
+            for(var i=0;i<article.length;i++) {
+                article[i].content = article[i].content.replace(/<\/?[^>]*>/g,'');
+                if(article[i].content.length>strLen) {
+                    article[i].content = article[i].content.substring(0, strLen) + "  ...";
+                }
+            }
+        return res.status(200).send({
+                article: article
+            })
+        }).catch(function (err) {
+        return res.status(401).send();
+    });
+};
+
+exports.articleTogether = function (req, res) {
+    var uid = req.params.id;
+    var id;
+    if(req.user) id = req.user.id;
+    var time = parseInt(req.params.date);
+    var date = new Date(time);
+    User.findById(uid).then(function (user) {
+        var fid = user.friend;
+        if(!fid) throw new Error();
+        var condition = {
+            authId: {$in: [uid,fid]},
+            created: {$lt: date }
+        };
+        if(uid != id || uid != fid) condition.status = {$gt: 0};
+        return Article.find(condition,'authId title content image tag created commentCount pv', {
+            sort: {created: -1},
+            limit: 10
+        }).populate('authId','nickname sex')
+            .exec()
+    }).then(function (article) {
         var strLen = 200;
         for(var i=0;i<article.length;i++) {
             article[i].content = article[i].content.replace(/<\/?[^>]*>/g,'');

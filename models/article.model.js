@@ -17,7 +17,7 @@ var articleSchema = new Schema({
 	commentCount: { type:Number, default:0 },
 	collectCount: { type:Number, default:0 },
 	pv: { type:Number, default:0 }
-});
+}, { collection: 'Article'});
 
 var Article = mongoose.model('Article',articleSchema);
 

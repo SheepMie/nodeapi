@@ -1,7 +1,7 @@
 # nodeapi
 write useful api by node,case I have no more time to write a complete project!
-> Before writing,I should thanks the product evangelist who named xuyd in github.All the apis were copied from his lovely diary! I just select someone usually and analyse them. If you want to learn more,Go https://github.com/xuyd/vue-dairy
-
+> Before writing,I should thanks the product evangelist who named xuyd in github.All the apis were copied from his lovely diary! I just select someone usually and analyse them. If you want to learn more,Go https://github.com/xuyd/vue-dairy.Hope you can understand my English
+,if you can not endure,maybe you have no girlfriend(:_:)
 ## node版本
 >node6.9.5
 
@@ -140,11 +140,20 @@ var authId = {
 }
 ```
 
-## 查找并返回相应条件的内容
+## 根据条件查找并返回相应内容
 > models:-
 >
-> path:articleList/:date 【get】
+> path:article/articleList/:date 【get】
 >
 > files:routes/article
 
-学：params获取url对应参数，query获取get参数，在这里date获取的是时间戳
+学：params获取url对应参数，query获取get参数，在这里date获取的是时间戳,为何加时间戳呢，笔者以为是为了解除缓存
+
+## 根据作者id获取作者的文章
+> models:-
+>
+> path: article/:id/:date 【get】
+>
+> files:routes/article
+
+

@@ -78,7 +78,7 @@ var userSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref: 'User'
     },
-});
+}, { collection: 'User'});             // mongoose会自动把表名变成小写添加一个s。要不使改变表名，添加{ collection: model_name}这句话
 
 userSchema
     .virtual('password')

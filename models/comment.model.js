@@ -14,7 +14,7 @@ var CommentSchema = new Schema({
 	status:{ type :Number, default:1 },
 	created: { type: Date, default: Date.now },
 	updated: { type: Date, default: Date.now }
-});
+}, { collection: 'Comment'});
 
 var Comment = mongoose.model('Comment',CommentSchema);
 
