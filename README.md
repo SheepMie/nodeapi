@@ -126,7 +126,7 @@ function ajax2Blob(url, onSuccess) {		//url为静态资源地址
 ## 获取文章详情
 > models:-
 >
-> path:article/:id/articlePage 【get】
+> path:article/:id/articlePage 【get id:文章id】
 >
 > files:routes/article
 
@@ -143,7 +143,7 @@ var authId = {
 ## 根据条件查找并返回相应内容
 > models:-
 >
-> path:article/articleList/:date 【get】
+> path:article/articleList/:date 【get date:时间戳】
 >
 > files:routes/article
 
@@ -152,8 +152,31 @@ var authId = {
 ## 根据作者id获取作者的文章
 > models:-
 >
-> path: article/:id/:date 【get】
+> path: article/:id/:date 【get id:作者id date:时间戳】
 >
 > files:routes/article
 
+## 收藏取消收藏(token)
+> models:-
+>
+> path: article/:id/articleCollect【put id:文章id】
+>
+> files:routes/article
 
+## 编辑文章(token)
+> models:-
+>
+> path: article/:id/editArticle【put id:文章id】
+>
+> files:routes/article
+
+:) 这里用了一个save把数据覆盖，而不是用update
+
+## 删除文章(token)
+> models:-
+>
+> path: article/:id【delete id:文章id】
+>
+> files:routes/article
+
+:) 删除和编辑都首先要判断是否是用户本人
