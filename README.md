@@ -170,7 +170,7 @@ var authId = {
 >
 > files:routes/article
 
-:) 这里用了一个save把数据覆盖，而不是用update
+: ) 这里用了一个save把数据覆盖，而不是用update
 
 ## 删除文章(token)
 > models:-
@@ -179,4 +179,13 @@ var authId = {
 >
 > files:routes/article
 
-:) 删除和编辑都首先要判断是否是用户本人
+注： 删除和编辑都首先要判断是否是用户本人
+
+## 留言操作可改成评论(token)
+> models:express-jwt，lodash
+>
+> path: comment/addComment【post】
+>
+> files:routes/comment
+
+: ) 操作与文章编辑基本一致 (是对文章留言，所以aid是文章id)

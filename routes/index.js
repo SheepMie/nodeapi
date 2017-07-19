@@ -6,7 +6,7 @@ module.exports = function(app) {
 
     app.use('/article', require('./article/index'));
 
-    //app.use('/comment', require('./comment/index'));
+    app.use('/comment', require('./comment/index'));
 
     //app.use('/album', require('./album/index'));
 
